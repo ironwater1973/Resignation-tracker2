@@ -15,10 +15,12 @@ workflows:
     scripts:
       - name: Build iOS IPA
         script: |
+          xcode-project generate-export-options-plist --profile-type app_store || true
           xcode-project build-ipa \
             --workspace "$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME" \
-            --config Release
+            --config Release \
+            --export-options-plist "iOS/ExportOptions.plist"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
