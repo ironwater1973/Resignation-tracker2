@@ -7,15 +7,9 @@ workflows:
       app_store_connect: Resignation Tracker
     environment:
       vars:
-        BUNDLE_ID: "com.IronWaterMk88.app"
+        BUNDLE_ID: "com.resignation.tracker"
         XCODE_SCHEME: "WorkVibeTracker"
     scripts:
-      - name: Set up keychain and code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
-          keychain add-certificates
-          xcode-project use-profiles
       - name: Build iOS IPA
         script: |
           xcode-project build-ipa \
