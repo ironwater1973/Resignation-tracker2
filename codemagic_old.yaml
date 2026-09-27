@@ -1,0 +1,39 @@
+workflows:
+  ios-release:
+    name: iOS Resignation Tracker Release & App Store Upload
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.resignation.tracker
+      vars:
+        XCODE_SCHEME: "WorkVibeTracker"
+        BUNDLE_ID: "com.resignation.tracker"
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Set up keychain and code signing
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Build iOS IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "iOS/WorkVibeTracker.xcworkspace" \
+            --scheme "$XCODE_SCHEME" \
+            --config Release
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - ironwater1973@yahoo.com.sg
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false

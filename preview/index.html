@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resignation Tracker - iOS Interactive Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="device-container">
+    <!-- Dynamic Island / Notch -->
+    <div class="dynamic-island"></div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>9:41</span>
+      <span style="letter-spacing:2px">📶 📡 🔋</span>
+    </div>
+
+    <!-- VIEW 1: 30-DAY GRID VIEW -->
+    <div id="view-grid" class="app-screen">
+      <!-- Header Card -->
+      <div class="header-card">
+        <div class="header-title">
+          <div style="font-size:10px; font-weight:800; font-family:monospace; color:#ff9500; margin-bottom:2px">RESIGNATION TRACKER</div>
+          <h1>30-Day Emotion Grid</h1>
+          <div class="header-subtitle">Tap day slot to log vibe</div>
+        </div>
+
+        <div class="progress-ring-box">
+          <svg width="56" height="56">
+            <defs>
+              <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff9500" />
+                <stop offset="100%" stop-color="#ff3b30" />
+              </linearGradient>
+            </defs>
+            <circle class="progress-ring-bg" cx="28" cy="28" r="22" />
+            <circle id="progress-val" class="progress-ring-val" cx="28" cy="28" r="22" />
+          </svg>
+          <div id="progress-text" class="progress-text">0/30</div>
+        </div>
+      </div>
+
+      <!-- Legend Pill -->
+      <div class="legend-pill">
+        <div class="legend-item fcuk">🤬 FCUK!! (<span id="count-fcuk">0</span>)</div>
+        <div class="legend-item fire">🔥 On Fire (<span id="count-fire">0</span>)</div>
+        <div class="legend-item happy">🐥 Happy (<span id="count-happy">0</span>)</div>
+      </div>
+
+      <!-- 30 Slot Grid Container -->
+      <div id="grid-container" class="day-grid"></div>
+
+      <!-- TRIANGLE FINAL VERDICT SLOT CARD -->
+      <div class="triangle-verdict-card" onclick="openVerdictPicker()">
+        <div class="triangle-badge">
+          <span>⚠️</span>
+        </div>
+        <div class="verdict-header-title">FINAL VERDICT SLOT</div>
+        <div id="verdict-status-display"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: ANALYTICS VIEW -->
+    <div id="view-analytics" class="app-screen" style="display:none">
+      <div style="font-size:22px; font-weight:800; margin-bottom:16px">Vibe Analytics</div>
+      
+      <div class="score-card">
+        <div style="font-size:11px; font-weight:800; font-family:monospace; color:var(--text-secondary)">WORK VIBE BALANCE SCORE</div>
+        <div id="analytics-score" class="score-num" style="color:#ff9500">50</div>
+        <div style="font-size:13px; font-weight:700; color:var(--text-secondary)">30-Day Workplace Energy Index</div>
+      </div>
+
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; padding:20px; margin-bottom:20px">
+        <div style="font-size:15px; font-weight:700; margin-bottom:12px">Career Verdict</div>
+        <div id="analytics-verdict-display"></div>
+      </div>
+
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; padding:20px; margin-bottom:20px">
+        <div style="font-size:15px; font-weight:700; margin-bottom:14px">30-Day Emotion Breakdown</div>
+
+        <div class="bar-row">
+          <div class="bar-meta">
+            <span>🤬 FCUK!!</span>
+            <span id="bar-fcuk-text">0 slots (0%)</span>
+          </div>
+          <div class="bar-track">
+            <div id="bar-fcuk-fill" class="bar-fill fcuk" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-meta">
+            <span>🔥 On Fire</span>
+            <span id="bar-fire-text">0 slots (0%)</span>
+          </div>
+          <div class="bar-track">
+            <div id="bar-fire-fill" class="bar-fill fire" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-meta">
+            <span>🐥 Happy Chick</span>
+            <span id="bar-happy-text">0 slots (0%)</span>
+          </div>
+          <div class="bar-track">
+            <div id="bar-happy-fill" class="bar-fill happy" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="resetData()" style="background:#ff3b30; box-shadow:0 4px 15px rgba(255,59,48,0.3)">Reset 30-Day Data</button>
+    </div>
+
+    <!-- VIEW 3: APP GUIDE -->
+    <div id="view-guide" class="app-screen" style="display:none">
+      <div style="font-size:22px; font-weight:800; margin-bottom:16px">App Info & Guide</div>
+      
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; padding:20px; margin-bottom:16px">
+        <div style="font-size:16px; font-weight:800; color:#ff9500; margin-bottom:8px">📱 Native iOS & App Store Ready</div>
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.5">
+          This project contains native Swift & SwiftUI code for deployment to Apple iPhone via Xcode and App Store Connect.
+        </p>
+      </div>
+
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; padding:20px">
+        <div style="font-size:15px; font-weight:700; margin-bottom:12px">3 Signature Emotions & Final Verdict</div>
+        <p style="font-size:13px; margin-bottom:8px">🤬 <b>FCUK!!</b>: High stress & WTF moments</p>
+        <p style="font-size:13px; margin-bottom:8px">🔥 <b>On Fire</b>: Anger, intense friction & rage</p>
+        <p style="font-size:13px; margin-bottom:12px">🐥 <b>Happy Chick</b>: Good vibes & peaceful productivity</p>
+        <p style="font-size:13px; color:#ff9500">⚠️ <b>Final Verdict Slot</b>: Choose between "FCUK THIS I QUIT!! 🤬💣" or "I WILL STAY <span style="text-transform:lowercase">for now</span>"</p>
+      </div>
+    </div>
+
+    <!-- MODAL PICKER SHEET FOR DAY SLOTS -->
+    <div id="modal-overlay" class="modal-overlay" onclick="if(event.target===this) closePicker()">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <h2 id="sheet-day-title">Day Vibe Log</h2>
+          <p>Select 1 emotion for today</p>
+        </div>
+
+        <div id="options-container"></div>
+
+        <div class="slots-preview-bar" id="slots-preview"></div>
+
+        <div style="margin-top:14px">
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:6px">Work Note (Optional)</label>
+          <input id="note-input" type="text" placeholder="e.g. Tough deadline, client call..." style="width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:13px; outline:none">
+        </div>
+
+        <button class="btn-primary" onclick="saveCurrentDay()">Save Vibe Entry</button>
+      </div>
+    </div>
+
+    <!-- MODAL PICKER SHEET FOR TRIANGLE VERDICT SLOT -->
+    <div id="modal-verdict-overlay" class="modal-overlay" onclick="if(event.target===this) closeVerdictPicker()">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <h2 style="color:#ff3b30">⚠️ Final Verdict Slot</h2>
+          <p>What is your 30-day work decision?</p>
+        </div>
+
+        <div id="verdict-options-container"></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM TAB BAR -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="grid">
+        <span class="tab-icon">📅</span>
+        <span>30-Day Grid</span>
+      </button>
+      <button class="tab-btn" data-tab="analytics">
+        <span class="tab-icon">📊</span>
+        <span>Analytics</span>
+      </button>
+      <button class="tab-btn" data-tab="guide">
+        <span class="tab-icon">ℹ️</span>
+        <span>Guide</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
