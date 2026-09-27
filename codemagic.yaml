@@ -9,7 +9,7 @@ workflows:
         ios_signing:
         distribution_type: app_store
         bundle_identifier: com.resignation.tracker
-      vars:
+        vars:
         BUNDLE_ID: "com.resignation.tracker"
         XCODE_SCHEME: "WorkVibeTracker"
         XCODE_WORKSPACE: "iOS/WorkVibeTracker.xcworkspace"
